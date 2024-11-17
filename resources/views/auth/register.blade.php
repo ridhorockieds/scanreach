@@ -1,25 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Register | Scan Reach</title>
+@extends('auth.layouts.auth')
 
-  <!-- Google Font: Source Sans Pro -->
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
-  <!-- Font Awesome -->
-  <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
-  <!-- icheck bootstrap -->
-  <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
-  <!-- Theme style -->
-  <link rel="stylesheet" href="{{ asset('assets/css/adminlte.min.css') }}">
-</head>
-<body class="hold-transition register-page">
-<div class="register-box">
-  <div class="register-logo">
-    <a href="../../index2.html"><b>Admin</b>LTE</a>
-  </div>
+@section('title', 'Register')
 
+@section('content')
   <div class="card">
     <div class="card-body register-card-body">
       <p class="login-box-msg">Register a new membership</p>
@@ -80,9 +63,4 @@
     <!-- /.form-box -->
   </div><!-- /.card -->
 </div>
-<!-- /.register-box -->
-
-<!-- jQuery -->
-<script src="../../plugins/jquery/jquery.min.js"></script>
-</body>
-</html>
+@endsection
