@@ -13,6 +13,8 @@
   <link rel="stylesheet" href="{{ asset('plugins/icheck-bootstrap/icheck-bootstrap.min.css') }}">
   <!-- Theme style -->
   <link rel="stylesheet" href="{{ asset('assets/css/adminlte.min.css') }}">
+  <!-- Toastr -->
+  <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
 </head>
 <body class="hold-transition login-page">
 <div class="login-box">
@@ -25,6 +27,10 @@
 
 <!-- jQuery -->
 <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
+<!-- Toastr -->
+<script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+<script src="{{ asset('assets/js/auth/default-toast.js') }}"></script>
+<script src="{{ asset('assets/js/auth/default-ajax.js') }}"></script>
 <!-- Bootstrap 4 -->
 {{-- <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script> --}}
 <!-- AdminLTE App -->

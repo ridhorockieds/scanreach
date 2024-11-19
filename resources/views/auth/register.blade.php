@@ -7,10 +7,10 @@
     <div class="card-body register-card-body">
       <p class="login-box-msg">Register a new membership</p>
 
-      <form action="#" method="post">
+      <form action="{{ route('register') }}" method="post" id="mainForm">
         @csrf
         <div class="input-group mb-3">
-          <input type="text" name="fullname" class="form-control" placeholder="Full name">
+          <input type="text" name="fullname" class="form-control" placeholder="Full Name">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-user"></span>
