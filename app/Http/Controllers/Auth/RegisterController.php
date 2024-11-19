@@ -77,9 +77,11 @@ class RegisterController extends Controller
             'fullname' => $data['fullname'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
-            'otp_code' => $otp_code,
+            'otp' => $otp_code,
             'otp_expires_at' => $otp_expires_at,
         ]);
+
+        $user->assignRole('user');
 
         return $user;
     }
