@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('otp')->nullable();
             $table->timestamp('otp_expires_at')->nullable();
+            $table->timestamp('otp_resend_at')->nullable();
             $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->string('phone')->nullable();
             $table->string('id_telegram')->nullable();

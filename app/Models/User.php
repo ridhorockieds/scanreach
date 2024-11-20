@@ -23,6 +23,7 @@ class User extends Authenticatable
         'password',
         'otp',
         'otp_expires_at',
+        'otp_resend_at',
         'status',
         'phone',
         'id_telegram',

@@ -18,8 +18,8 @@ class UserStatus
     public function handle(Request $request, Closure $next): Response
     {
         if (Auth::check() && Auth::user()->status === 'inactive') {
-            return redirect()->route('verification.notice');
-        } elseif (Auth::check() && Auth::user()->status === 'active' && $request->route()->getName() === 'verification.notice') {
+            return redirect()->route('email.verify');
+        } elseif (Auth::check() && Auth::user()->status === 'active' && $request->route()->getName() === 'email.verify') {
             return redirect()->route('home');
         }
 
