@@ -41,7 +41,7 @@ class LoginController extends Controller
 
     public function authenticated($request, $user)
     {
-        return redirect(route('home'));
+        return redirect(route('dashboard'));
     }
 
     protected function sendLoginResponse(Request $request)
