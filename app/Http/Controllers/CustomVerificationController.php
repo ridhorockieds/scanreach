@@ -16,7 +16,7 @@ class CustomVerificationController extends Controller
             return view('auth.verify');
         }
 
-        return redirect()->route('home');
+        return redirect()->route('dashboard');
     }
 
     public function resendVerification(Request $request)
@@ -47,7 +47,7 @@ class CustomVerificationController extends Controller
                 'message' => 'OTP code has been sent to your email',
             ], 200);
         } else {
-            return redirect()->route('home');
+            return redirect()->route('dashboard');
         }
     }
 }

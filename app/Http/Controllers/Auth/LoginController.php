@@ -52,7 +52,7 @@ class LoginController extends Controller
 
         return response()->json([
             'message' => 'Logged in successfully',
-            'redirect' => route('home')
+            'redirect' => route('dashboard')
         ], 200);
     }
 }

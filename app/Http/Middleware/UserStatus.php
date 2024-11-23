@@ -20,7 +20,7 @@ class UserStatus
         if (Auth::check() && Auth::user()->status === 'inactive') {
             return redirect()->route('email.verify');
         } elseif (Auth::check() && Auth::user()->status === 'active' && $request->route()->getName() === 'email.verify') {
-            return redirect()->route('home');
+            return redirect()->route('dashboard');
         }
 
         return $next($request);
