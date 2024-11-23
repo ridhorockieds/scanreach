@@ -31,11 +31,7 @@
 <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
 <script src="{{ asset('assets/js/auth/default-toast.js') }}"></script>
 <script src="{{ asset('assets/js/auth/default-ajax.js') }}"></script>
-<!-- Bootstrap 4 -->
-{{-- <script src="../../plugins/bootstrap/js/bootstrap.bundle.min.js"></script> --}}
-<!-- AdminLTE App -->
-{{-- <script src="../../dist/js/adminlte.min.js"></script> --}}
-@push('name')
+@push('script')
     
 @endpush
 </body>
