@@ -10,16 +10,11 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        if (Auth::user()->hasRole('admin')) {
-            // hitung user dengan role user
-            $users = User::whereHas('roles', function ($query) {
-                $query->where('name', 'user');
-            })->get()->count();
-            return view('admin.dashboard.index', compact('users'));
-        } elseif (Auth::user()->hasRole('user')) {
-            return view('user.dashboard.index');
-        } else {
-            abort(404);
+        if (Auth::check()) {
+            $totalUsers = User::role('user')->get()->count();
+            return view('admin.dashboard.index', compact('totalUsers'));
         }
+
+        return redirect()->route('login')->withErrors('error', 'You are not logged in!');
     }
 }
