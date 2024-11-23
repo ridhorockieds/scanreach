@@ -58,7 +58,7 @@
 
               <div class="info-box-content">
                 <span class="info-box-text">Users</span>
-                <span class="info-box-number">{{ $users }}</span>
+                <span class="info-box-number">{{ $totalUsers }}</span>
               </div>
               <!-- /.info-box-content -->
             </div>
