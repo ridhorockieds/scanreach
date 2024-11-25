@@ -32,8 +32,8 @@
     <script src="{{ asset('plugins/jquery/jquery.min.js') }}"></script>
     <!-- Toastr -->
     <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
-    <script src="{{ asset('assets/js/auth/default-toast.js') }}"></script>
-    <script src="{{ asset('assets/js/auth/default-ajax.js') }}"></script>
+    <script src="{{ asset('assets/js/default-toast.js') }}"></script>
+    <script src="{{ asset('assets/js/default-ajax.js') }}"></script>
 </body>
 
 </html>
