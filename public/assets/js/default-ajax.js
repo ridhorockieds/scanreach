@@ -4,14 +4,19 @@ const method = form.attr("method");
 const buttonSubmit = form.find("button[type=submit]");
 const textSubmit = buttonSubmit.text();
 
-buttonSubmit.on("click", submitForm);
+buttonSubmit.on("click", function (e) {
+    e.preventDefault();
+    submitForm();
+});
 
 function submitForm() {
+    let data = new FormData(form[0]);
     $.ajax({
         url,
         method,
-        data: form.serialize(),
-        dataType: "json",
+        data: data,
+        contentType: false, // Harus false untuk mengirim FormData
+        processData: false,
         beforeSend: () => buttonSubmit.prop("disabled", true).html(`<i class="fa fa-spinner fa-spin"></i>`),
         success: ({ message, redirect }) => {
             successToast(message);

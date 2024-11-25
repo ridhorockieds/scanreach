@@ -15,7 +15,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link items">
+                    <a href="{{ route('items.index') }}" class="nav-link items">
                         <i class="nav-icon fas fa-cubes"></i>
                         <p>Items</p>
                     </a>
@@ -26,13 +26,13 @@
                         <p>Chat <span class="right badge badge-danger">1</span></p>
                     </a>
                 </li>
-                @if(Auth::user()->hasRole('admin'))
-                <li class="nav-item">
-                    <a href="#" class="nav-link users">
-                        <i class="nav-icon fas fa-users"></i>
-                        <p>Users</p>
-                    </a>
-                </li>
+                @if (Auth::user()->hasRole('admin'))
+                    <li class="nav-item">
+                        <a href="#" class="nav-link users">
+                            <i class="nav-icon fas fa-users"></i>
+                            <p>Users</p>
+                        </a>
+                    </li>
                 @endif
                 <li class="nav-item">
                     <a href="#" class="nav-link setting">
@@ -44,5 +44,5 @@
         </nav>
         <!-- /.sidebar-menu -->
     </div>
-    <!-- /.sidebar -->        
+    <!-- /.sidebar -->
 </aside>
