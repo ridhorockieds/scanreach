@@ -1,6 +1,6 @@
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link text-center">
+    <a href="{{ route('dashboard') }}" class="brand-link text-center">
         <span class="brand-text font-weight-semibold">{{ config('app.name') }}</span>
     </a>
     <!-- Sidebar -->
@@ -9,7 +9,7 @@
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
-                    <a href="#" class="nav-link dashboard">
+                    <a href="{{ route('dashboard') }}" class="nav-link dashboard">
                         <i class="nav-icon fas fa-home"></i>
                         <p>Dashboard</p>
                     </a>
