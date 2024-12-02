@@ -32,7 +32,7 @@ class DashboardController extends Controller
             $totalChat = Chat::count();   // Override untuk admin melihat semua chat
         }
 
-        return view('admin.dashboard.index', compact('breadcrumbs', 'totalUsers', 'totalItems', 'totalChat'));
+        return view('dashboard.index', compact('breadcrumbs', 'totalUsers', 'totalItems', 'totalChat'));
     }
 }
 
