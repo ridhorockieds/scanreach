@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
@@ -19,8 +20,15 @@ class ItemController extends Controller
             ['name' => 'Items', 'url' => route('items.index')]
         ];
 
-        $items = Item::where('user_id', auth()->user()->id)->get();
-        return view('items.index', compact('breadcrumbs', 'items'));
+        if (Auth::user()->hasRole('admin')) {
+            $items = Item::all();
+            return view('items.admin.index', compact('breadcrumbs', 'items'));
+        } elseif (Auth::user()->hasRole('user')) {
+            $items = Item::where('user_id', auth()->user()->id)->get();
+            return view('items.user.index', compact('breadcrumbs', 'items'));
+        } else {
+            abort(404);
+        }
     }
 
     public function create()
@@ -30,7 +38,11 @@ class ItemController extends Controller
             ['name' => 'Create', 'url' => '']
         ];
 
-        return view('items.create', compact('breadcrumbs'));
+        // only user
+        if (auth()->user()->hasRole('user')) {
+            return view('items.create', compact('breadcrumbs'));
+        }
+        abort(403);
     }
 
     /**
@@ -115,7 +127,7 @@ class ItemController extends Controller
             ['name' => 'Edit', 'url' => '']
         ];
 
-        return view('items.edit', compact('breadcrumbs', 'item'));
+        return view('items.user.edit', compact('breadcrumbs', 'item'));
     }
 
     public function update(Request $request, Item $item)
