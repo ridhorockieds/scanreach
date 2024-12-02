@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomVerificationController;
@@ -17,7 +18,13 @@ Route::middleware('auth')->group(function () {
         Route::resource('items', ItemController::class)->parameters([
             'items' => 'item:uuid'
         ]);
+        // route chat only index, show
+        Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
+        Route::get('/chat/{id}', [ChatController::class, 'show'])->name('chat.show');
     });
     Route::get('verify', [CustomVerificationController::class, 'index'])->name('email.verify');
     Route::post('verify', [CustomVerificationController::class, 'resendVerification'])->name('verification.resend');
 });
+
+Route::get('/c/{uuid}', [ChatController::class, 'create'])->name('chat.create');
+Route::post('/c/{uuid}', [ChatController::class, 'sendMessage'])->name('chat.send');

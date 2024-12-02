@@ -21,9 +21,13 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="#" class="nav-link chat">
+                    <a href="{{ route('chat.index') }}" class="nav-link chat">
                         <i class="nav-icon fas fa-comment-dots"></i>
-                        <p>Chat <span class="right badge badge-danger">1</span></p>
+                        <p>Chat
+                            @if ($totalChats > 0)
+                                <span class="right badge badge-danger">{{ $totalChats }}</span>
+                            @endif
+                        </p>
                     </a>
                 </li>
                 @if (Auth::user()->hasRole('admin'))
