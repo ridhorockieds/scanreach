@@ -12,7 +12,7 @@
             </div>
             <div class="modal-footer justify-content-between">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <a href="#" id="download-button" class="btn btn-primary">Download Gambar</a>
+                <a href="#" id="download-button" class="btn btn-primary"><i class="fas fa-download mr-1"></i>Download QR Code</a>
             </div>
         </div>
         <!-- /.modal-content -->
