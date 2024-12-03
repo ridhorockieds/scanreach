@@ -8,7 +8,11 @@
                 </button>
             </div>
             <div class="modal-body">
-                <img class="img-fluid">
+                <img class="img-fluid" id="gambar" alt="QR Code">
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <a href="#" id="download-button" class="btn btn-primary">Download Gambar</a>
             </div>
         </div>
         <!-- /.modal-content -->

@@ -100,8 +100,10 @@ class ItemController extends Controller
 
         // Generate QR code
         $uuid = Str::uuid();
+        // url app on env + uuid
+        $urlQRCode = env('APP_URL') . '/c/' . $uuid;
         $qrCodePath = "{$uuid}.png";
-        Storage::put("public/qrcodes/{$qrCodePath}", QrCode::format('png')->size(600)->margin(2)->generate($uuid));
+        Storage::put("public/qrcodes/{$qrCodePath}", QrCode::format('png')->size(600)->margin(2)->generate($urlQRCode));
 
         // Simpan data ke database (contoh model Item)
         Item::create([

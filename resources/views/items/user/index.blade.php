@@ -96,5 +96,13 @@
                 "searching": true,
             });
         });
+
+        document.getElementById('download-button').addEventListener('click', function() {
+            var gambar = document.getElementById('gambar');
+            var link = document.createElement('a');
+            link.href = gambar.src;
+            link.download = '{{ $item->name }}' + '-' + '{{ $item->qr_code_path }}';
+            link.click();
+        });
     </script>
 @endsection
