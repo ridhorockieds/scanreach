@@ -40,7 +40,7 @@ class ItemController extends Controller
 
         // only user
         if (auth()->user()->hasRole('user')) {
-            return view('items.create', compact('breadcrumbs'));
+            return view('items.user.create', compact('breadcrumbs'));
         }
         abort(403);
     }
