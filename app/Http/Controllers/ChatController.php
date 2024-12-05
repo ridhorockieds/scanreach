@@ -26,9 +26,13 @@ class ChatController extends Controller
         $breadcrumbs = [
             ['name' => 'Chat', 'url' => route('chat.index')]
         ];
-        // get chat by user_id and order by created_at desc
-        $chats = Chat::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
-        return view('chat.index', compact('chats', 'breadcrumbs'));
+
+        if(auth()->user()->hasRole('admin')) {
+            $chats = Chat::orderBy('created_at', 'desc')->get();
+        } else {
+            $chats = Chat::where('user_id', auth()->user()->id)->orderBy('created_at', 'desc')->get();
+        }
+        return view('chat.index', compact('breadcrumbs', 'chats'));
     }
 
     public function show($id)
@@ -42,9 +46,12 @@ class ChatController extends Controller
             if (!$chat) {
                 abort(404);
             }
-            $chat->update([
-                'read' => 1,
-            ]);
+
+            if($chat->user_id == auth()->user()->id ) {
+                $chat->update([
+                    'read' => 1,
+                ]);
+            }
             return view('chat.show', compact('chat','breadcrumbs'));
         } catch (\Throwable $th) {
             throw $th;
@@ -142,5 +149,17 @@ class ChatController extends Controller
             'image' => $request->image,
             'time_resend' => Carbon::now()->addMinutes(1),
         ]);
+    }
+
+    /*
+     * Hapus Chat hanya untuk admin
+     */
+    public function destroy($id)
+    {
+        if (!auth()->user()->hasRole('admin')) {
+            abort(403);
+        }
+        Chat::where('id', $id)->delete();
+        return redirect()->route('chat.index');
     }
 }

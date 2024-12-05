@@ -18,9 +18,9 @@ Route::middleware('auth')->group(function () {
         Route::resource('items', ItemController::class)->parameters([
             'items' => 'item:uuid'
         ]);
-        // route chat only index, show
         Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
         Route::get('/chat/{id}', [ChatController::class, 'show'])->name('chat.show');
+        Route::delete('/chat/{id}', [ChatController::class, 'destroy'])->name('chat.destroy');
     });
     Route::get('verify', [CustomVerificationController::class, 'index'])->name('email.verify');
     Route::post('verify', [CustomVerificationController::class, 'resendVerification'])->name('verification.resend');
