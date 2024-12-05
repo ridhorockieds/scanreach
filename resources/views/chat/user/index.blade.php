@@ -27,9 +27,6 @@
                                 <th>Message</th>
                                 <th>Status</th>
                                 <th>Received</th>
-                                @if(auth()->user()->hasRole('admin'))
-                                    <th>Action</th>
-                                @endif
                             </tr>
                         </thead>
                         <tbody>
@@ -48,12 +45,6 @@
                                     <td>
                                         {{ $chat->created_at->format('d M Y') }}
                                     </td>
-                                    @if(auth()->user()->hasRole('admin'))
-                                        <td>
-                                            <a href="{{ route('chat.destroy', $chat->id) }}"
-                                                class="btn btn-danger btn-sm"><i class="fas fa-trash mr-2"></i>Delete</a>
-                                        </td>
-                                    @endif
                                 </tr>
                             @endforeach
                         </tbody>
