@@ -51,4 +51,16 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+
+    // Relasi ke tabel items
+    public function items()
+    {
+        return $this->hasMany(Item::class);
+    }
+
+    // Relasi ke tabel chats
+    public function chats()
+    {
+        return $this->hasMany(Chat::class);
+    }
 }
