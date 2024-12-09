@@ -97,11 +97,11 @@
             });
         });
 
-        document.getElementById('download-button').addEventListener('click', function() {
-            var gambar = document.getElementById('gambar');
+        $('#download-button').on('click', function() {
+            var gambar = $('#gambar');
             var link = document.createElement('a');
             link.href = gambar.src;
-            link.download = '{{ $item->name }}' + '-' + '{{ $item->qr_code_path }}';
+            link.download = '{{ $item->name ?? 'QR Code' }}' + '-' + '{{ $item->qr_code_path ?? 'QR Code' }}' + '.png';
             link.click();
         });
     </script>
