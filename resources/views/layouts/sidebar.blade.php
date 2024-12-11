@@ -39,7 +39,7 @@
                     </li>
                 @endif
                 <li class="nav-item">
-                    <a href="#" class="nav-link setting">
+                    <a href="{{ route('setting.index') }}" class="nav-link setting">
                         <i class="nav-icon fas fa-cog"></i>
                         <p>Setting</p>
                     </a>
