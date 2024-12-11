@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\ChatController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\SettingController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\CustomVerificationController;
 
@@ -22,6 +23,7 @@ Route::middleware('auth')->group(function () {
         Route::get('/chat', [ChatController::class, 'index'])->name('chat.index');
         Route::get('/chat/{id}', [ChatController::class, 'show'])->name('chat.show');
         Route::delete('/chat/{id}', [ChatController::class, 'destroy'])->name('chat.destroy');
+        Route::resource('users', UserController::class);
         Route::group(['prefix' => 'setting'], function () {
             Route::get('/', [SettingController::class, 'index'])->name('setting.index');
             Route::get('/account', [SettingController::class, 'account'])->name('setting.account');

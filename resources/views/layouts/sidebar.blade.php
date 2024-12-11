@@ -32,7 +32,7 @@
                 </li>
                 @if (Auth::user()->hasRole('admin'))
                     <li class="nav-item">
-                        <a href="#" class="nav-link users">
+                        <a href="{{ route('users.index')}}" class="nav-link users">
                             <i class="nav-icon fas fa-users"></i>
                             <p>Users</p>
                         </a>
