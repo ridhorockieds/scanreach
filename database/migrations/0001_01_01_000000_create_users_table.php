@@ -23,6 +23,9 @@ return new class extends Migration
             $table->enum('status', ['active', 'inactive'])->default('inactive');
             $table->string('phone')->nullable();
             $table->string('id_telegram')->nullable();
+            $table->boolean('telegram_notification')->default(0);
+            $table->boolean('whatsapp_notification')->default(0);
+            $table->boolean('sms_notification')->default(0);
             $table->rememberToken();
             $table->timestamps();
         });
