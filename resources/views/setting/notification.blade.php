@@ -30,8 +30,8 @@
                                         <label for="telegram">Telegram</label>
                                         <div class="form-group d-flex align-items-center">
                                             <input type="text" class="form-control mr-2" id="telegram" name="telegram" placeholder="1234567" value="{{ Auth::user()->id_telegram ?? '-' }}" disabled>
-                                            <div class="custom-control custom-switch custom-switch-off-danger custom-switch-on-success">
-                                                <input type="checkbox" class="custom-control-input" id="switch-telegram">
+                                            <div class="custom-control custom-switch {{ !Auth::user()->id_telegram ?? 'custom-switch-off-danger custom-switch-on-success' }}">
+                                                <input type="checkbox" class="custom-control-input" {{ Auth::user()->id_telegram ?? 'disabled'}} id="switch-telegram">
                                                 <label class="custom-control-label" for="switch-telegram"></label>
                                             </div>
                                         </div>
