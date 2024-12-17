@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Http\JsonResponse;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
@@ -82,6 +83,10 @@ class RegisterController extends Controller
         ]);
 
         $user->assignRole('user');
+
+        Mail::send('auth.otp', ['fullname' => $user->fullname, 'otp' => $user->otp], function ($message) use ($user) {
+            $message->to($user->email, $user->fullname)->subject('OTP Verification');
+        });
 
         return $user;
     }

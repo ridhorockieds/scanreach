@@ -138,7 +138,6 @@
     </head>
     <body>
 
-    {{-- app name --}}
     <div class="app-name">{{ config('app.name') }}</div>
     <div class="container">
         <div class="header">

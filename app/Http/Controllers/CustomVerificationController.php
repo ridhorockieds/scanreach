@@ -22,7 +22,7 @@ class CustomVerificationController extends Controller
     public function resendVerification(Request $request)
     {
         $user = Auth::user();
-        $otpResendLimit = 2;
+        $otpResendLimit = 10;
         $otpResendTimeout = now()->subMinutes($otpResendLimit);
 
         if ($user->otp_resend_at && Carbon::parse($user->otp_resend_at)->gt($otpResendTimeout)) {
@@ -31,7 +31,7 @@ class CustomVerificationController extends Controller
             ], 429);
         } elseif ($user->status == 'inactive') {
             $otp = str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-            $otp_expires_at = now()->addMinutes(10);
+            $otp_expires_at = now()->addMinutes($otpResendLimit);
             $user->fill([
                 'otp' => $otp,
                 'otp_expires_at' => $otp_expires_at,
