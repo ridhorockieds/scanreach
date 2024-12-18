@@ -101,7 +101,7 @@
             var gambar = $('#gambar');
             var link = document.createElement('a');
             link.href = gambar.src;
-            link.download = '{{ $item->name ?? 'QR Code' }}' + '-' + '{{ $item->qr_code_path ?? 'QR Code' }}' + '.png';
+            link.download = '{{ $item->name ?? 'Item' }}' + '-' + '{{ $item->qr_code_path ?? 'Item' }}' + '.png';
             link.click();
         });
     </script>
