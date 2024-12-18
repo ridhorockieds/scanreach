@@ -9,6 +9,7 @@ use App\Models\User;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Http;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Drivers\Imagick\Driver;
@@ -79,14 +80,14 @@ class ChatController extends Controller
      * @param Request $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function sendMessage(Request $request)
+    public function sendChat(Request $request)
     {
         // Validasi input
         $request->validate([
-            'user_id' => 'required|exists:users,id',
-            'uuid' => 'required|exists:items,uuid',
-            'subject' => 'required|string|max:255',
-            'message' => 'required|string',
+            'user_id'   => 'required|exists:users,id',
+            'uuid'      => 'required|exists:items,uuid',
+            'subject'   => 'required|string|max:255',
+            'message'   => 'required|string',
         ]);
     
         // Cari chat terakhir dengan UUID
@@ -95,16 +96,16 @@ class ChatController extends Controller
         if (!$chat || $chat->time_resend <= Carbon::now()) {
             if ($request->hasFile('image')) {
                 // Proses gambar
-                $imageFile = $request->file('image');
-                $filename = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
+                $imageFile  = $request->file('image');
+                $filename   = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
 
                 // Buat instance gambar menggunakan Intervention Image
-                $manager = new ImageManager(new Driver());
+                $manager     = new ImageManager(new Driver());
 
                 // read image from filesystem
-                $image = $manager->read($imageFile);
+                $image      = $manager->read($imageFile);
 
-                $imageSize = $imageFile->getSize();
+                $imageSize  = $imageFile->getSize();
 
                 if ($imageSize > 5000000) { // > 5MB
                     $resizeFactor = 0.5;
@@ -128,9 +129,34 @@ class ChatController extends Controller
             }
 
             $this->createChat($request);
+            $this->sendNotification($request);
             return response()->json(['message' => 'Message sent successfully'], 200);
         } else {
-            return response()->json(['message' => 'You can send a message every 5 minutes'], 400);
+            return response()->json(['message' => 'Oops, you can only send a message once every 10 minutes.'], 400);
+        }
+    }
+
+    private function sendNotification($request)
+    {
+        $user = User::where('id', $request->user_id)->first();
+        
+        if($user->id_telegram) {
+            $telegramBotToken = env('TELEGRAM_BOT_TOKEN');
+            $telegramChatId = $user->id_telegram;
+            $subject = $request->subject;
+            $message = $request->message;
+            $time = Carbon::now()->format('Y-m-d H:i:s');
+
+            $url = "https://api.telegram.org/bot{$telegramBotToken}/sendMessage";
+
+            Http::post($url, [
+                'chat_id' => $telegramChatId,
+                'text' => "
+                    🔔 Notification!\n\n📅 {$time}\n📝 {$subject}\n💬 {$message}
+                ",
+            ]);
+        } else {
+            info("User not found (Telegram Webhook)");
         }
     }
     
@@ -142,12 +168,12 @@ class ChatController extends Controller
     private function createChat(Request $request)
     {
         Chat::create([
-            'user_id' => $request->user_id,
-            'uuid' => $request->uuid,
-            'subject' => $request->subject,
-            'message' => $request->message,
-            'image' => $request->image,
-            'time_resend' => Carbon::now()->addMinutes(1),
+            'user_id'       => $request->user_id,
+            'uuid'          => $request->uuid,
+            'subject'       => $request->subject,
+            'message'       => $request->message,
+            'image'         => $request->image,
+            'time_resend'   => Carbon::now()->addMinutes(1),
         ]);
     }
 
