@@ -53,8 +53,7 @@
                                     <td>{{ $user->id_telegram ?? '-' }}</td>
                                     <td>{{ $user->created_at->format('d M Y') }}</td>
                                     <td>
-                                        <a href="{{ route('users.edit', $user->id) }}"
-                                            class="btn btn-warning btn-sm"><i class="fas fa-edit mr-2"></i>Edit</a>
+                                        {{-- <a href="{{ route('users.edit', $user->id) }}" class="btn btn-warning btn-sm"><i class="fas fa-edit mr-2"></i>Edit</a> --}}
                                         <button type="button" class="btn btn-danger btn-sm"
                                             onclick="deleteUser({element: this, url: '{{ route('users.destroy', $user->id) }}'})">
                                             <i class="fas fa-trash mr-2"></i>Delete
