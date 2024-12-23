@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
+use Intervention\Image\Image;
+use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\ImageManager;
 use Illuminate\Support\Facades\Storage;
@@ -57,11 +59,22 @@ class ItemController extends Controller
         $validatedData = $request->validate([
             'name' => 'required|string|max:255',
             'description' => 'required|string|max:1000',
-            'image' => 'required|image|mimes:jpeg,jpg,png|max:5000', // Max size 5MB
+            'image' => 'required|file|max:5000', // Validasi file tanpa image/mimes
         ]);
 
         // Proses gambar
         $imageFile = $request->file('image');
+        $fileTmpPath = $imageFile->getRealPath();
+
+        // Validasi MIME type menggunakan exif_imagetype
+        $allowedTypes = [IMAGETYPE_JPEG, IMAGETYPE_PNG];
+        if (!in_array(exif_imagetype($fileTmpPath), $allowedTypes)) {
+            return response()->json([
+                'message' => 'Invalid image type. Only JPEG and PNG are allowed.',
+            ], 422);
+        }
+
+        // Buat nama file unik
         $filename = Str::random(20) . '.' . $imageFile->getClientOriginalExtension();
 
         // Buat instance gambar menggunakan Intervention Image
@@ -69,7 +82,10 @@ class ItemController extends Controller
 
         // read image from filesystem
         $image = $manager->read($imageFile);
+        // Buat instance gambar menggunakan Intervention Image
+        // $image = Image::read($fileTmpPath);
 
+        // Atur faktor resize berdasarkan ukuran file
         $imageSize = $imageFile->getSize();
 
         if ($imageSize > 5000000) { // > 5MB
@@ -96,17 +112,41 @@ class ItemController extends Controller
 
         // Simpan gambar di direktori storage
         $itemPath = "items/{$filename}";
-        Storage::put("public/{$itemPath}", (string) $image->encode());
+        // Storage::put("public/{$itemPath}", (string) $image->encode());
+        $filePath = storage_path("app/public/{$itemPath}");
+        // cek dan buat folder jika belum ada
+        if(!file_exists(dirname($filePath))) {
+            mkdir(dirname($filePath), 0777, true);        
+        }
+        
+        file_put_contents($filePath, (string) $image->encode());
+
 
         // Generate QR code
         $uuid = Str::uuid();
-        // url app on env + uuid
         $urlQRCode = env('APP_URL') . '/c/' . $uuid;
         $qrCodePath = "{$uuid}.png";
-        Storage::put("public/qrcodes/{$qrCodePath}", QrCode::format('png')->size(600)->margin(2)->generate($urlQRCode));
+        // Storage::put("public/qrcodes/{$qrCodePath}", QrCode::format('png')->size(600)->margin(2)->generate($urlQRCode));
+        $qrCodeContent = QrCode::format('png')->size(500)->margin(2)->generate($urlQRCode);
+        $relativePath = "qrcodes/{$qrCodePath}"; // Path relatif
+        $absolutePath = storage_path("app/public/{$relativePath}"); // Path absolut
 
-        // Simpan data ke database (contoh model Item)
-        Item::create([
+        // Tentukan path relatif dan absolut
+        $relativePath = "qrcodes/{$qrCodePath}";
+        $absolutePath = storage_path("app/public/{$relativePath}");
+
+        // Cek dan buat folder jika belum ada
+        $directory = dirname($absolutePath);
+        if (!file_exists($directory)) {
+            mkdir($directory, 0777, true);
+        }
+
+        // Simpan QR code menggunakan path absolut
+        file_put_contents($absolutePath, $qrCodeContent);
+
+
+        // Simpan data ke database
+        $item = Item::create([
             'uuid' => $uuid,
             'image' => $filename,
             'user_id' => auth()->id(),
@@ -116,11 +156,18 @@ class ItemController extends Controller
         ]);
 
         // Redirect dengan respon JSON
-        return response()->json([
-            'message' => 'Item created successfully',
-            'redirect' => route('items.index')
-        ], 200);
+        if($item){
+            return response()->json([
+                'message' => 'Item created successfully',
+                'redirect' => route('items.index')
+            ], 200);
+        } else {
+            return response()->json([
+                'message' => 'Item creation failed',
+            ], 500);
+        }
     }
+
 
     public function edit(Item $item)
     {
@@ -170,10 +217,17 @@ class ItemController extends Controller
 
             // Simpan gambar di direktori storage
             $itemPath = "items/{$filename}";
-            Storage::put("public/{$itemPath}", (string) $image->encode());
+            // Storage::put("public/{$itemPath}", (string) $image->encode());
+            $filePath = storage_path("app/public/{$itemPath}");
+            
+            file_put_contents($filePath, (string) $image->encode());
 
             // Hapus gambar lama
-            Storage::delete("public/items/{$item->image}");
+            // Storage::delete("public/items/{$item->image}");
+            // hapus gambar lama dengan file_exists
+            if (file_exists(storage_path("app/public/items/{$item->image}"))) {
+                unlink(storage_path("app/public/items/{$item->image}"));
+            }
 
             $item->image = $filename;
         }
@@ -193,8 +247,16 @@ class ItemController extends Controller
     public function destroy(Item $item)
     {
         // delete files
-        Storage::delete("public/items/{$item->image}");
-        Storage::delete("public/qrcodes/{$item->qr_code_path}");
+        // Storage::delete("public/items/{$item->image}");
+        // Storage::delete("public/qrcodes/{$item->qr_code_path}");
+        // hapus gambar lama dengan file_exists
+        if (file_exists(storage_path("app/public/items/{$item->image}"))) {
+            unlink(storage_path("app/public/items/{$item->image}"));
+        }
+        if (file_exists(storage_path("app/public/qrcodes/{$item->qr_code_path}"))) {
+            unlink(storage_path("app/public/qrcodes/{$item->qr_code_path}"));
+        }
+
         $item->delete();
 
         // Redirect dengan respon JSON
