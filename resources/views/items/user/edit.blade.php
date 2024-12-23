@@ -9,8 +9,7 @@
     <div class="content">
         <div class="container-fluid">
             <div class="row">
-                <!-- left column -->
-                <div class="col-md-12">
+                <div class="col-12 col-md-6">
                     <!-- jquery validation -->
                     <div class="card card-primary">
                         <div class="card-header">
@@ -60,7 +59,16 @@
                     </div>
                     <!-- /.card -->
                 </div>
-                <!--/.col (left) -->
+                <div class="col-12 col-md-6">
+                    <div class="card card-primary">
+                        <div class="card-header">
+                            <h3 class="card-title">Image Preview</h3>
+                        </div>
+                        <div class="card-body">
+                            <img class="card-img-top" src="{{ asset('storage/items/' . $item->image) }}" alt="{{ $item->name }}">
+                        </div>
+                    </div>
+                </div>
             </div>
             <!-- /.row -->
         </div>
