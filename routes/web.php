@@ -27,4 +27,4 @@ Route::middleware('auth')->group(function () {
 });
 
 Route::get('/c/{uuid}', [ChatController::class, 'create'])->name('chat.create');
-Route::post('/c/{uuid}', [ChatController::class, 'sendMessage'])->name('chat.send');
+Route::post('/c/{uuid}', [ChatController::class, 'sendChat'])->name('chat.send');

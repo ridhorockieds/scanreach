@@ -124,7 +124,16 @@ class ChatController extends Controller
 
                 // Simpan gambar di direktori storage
                 $chatPath = "chats/{$filename}";
-                Storage::put("public/{$chatPath}", (string) $image->encode());
+                // Storage::put("public/{$chatPath}", (string) $image->encode());
+
+                // Storage::put("public/{$itemPath}", (string) $image->encode());
+                $filePath = storage_path("app/public/{$chatPath}");
+                // cek dan buat folder jika belum ada
+                if(!file_exists(dirname($filePath))) {
+                    mkdir(dirname($filePath), 0777, true);        
+                }
+                
+                file_put_contents($filePath, (string) $image->encode());
                 $request->image = $filename;
             }
 
@@ -173,7 +182,7 @@ class ChatController extends Controller
             'subject'       => $request->subject,
             'message'       => $request->message,
             'image'         => $request->image,
-            'time_resend'   => Carbon::now()->addMinutes(1),
+            'time_resend'   => Carbon::now()->addMinutes(10),
         ]);
     }
 
